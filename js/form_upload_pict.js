@@ -23,7 +23,6 @@ export function uploadClosed() {
 
 // Функція зля закриття вікна (Escape)
 document.addEventListener("keydown", escapeFormClosed);
-
 export function escapeFormClosed(event) {
   if (
     event.code === "Escape" &&
@@ -39,7 +38,7 @@ descript.addEventListener("input", validateComment);
 function validateComment(e) {
   descript.setAttribute("maxlength", "140");
   console.log(descript.value);
-  if (descript.value.length > 139) {
+  if (descript.value.length > 140) {
     descript.setCustomValidity("Трошки коротче)))");
     descript.reportValidity();
   } else {
@@ -48,99 +47,56 @@ function validateComment(e) {
 }
 
 // Хеш_тег
-hashTag.addEventListener("change", validateInput);
+hashTag.addEventListener("change", validateHashTags);
+function validateHashTags() {
+  hashTag.removeAttribute('required');
 
-function validateInput() {
-  hashTag.removeAttribute("required");
-  const arrHashtags = this.value.split(" ").filter((el) => el.trim() !== "");
-  const setHashtegs = new Set(arrHashtags);
-  console.log(arrHashtags);
-  console.log(setHashtegs);
+
+  const arrayValue = hashTag.value.split(" ");
+  const arrHashtags = [];
+  for ( let el of arrayValue){
+    if(el.trim() !== '') {
+      arrHashtags.push(el);
+    }
+  }
+
+  const setHashtags = new Set();
+  const regex = /^#[a-z]*[а-я]*[0-9]*/gi;
+
   if (arrHashtags.length > 5) {
     hashTag.setCustomValidity("Максимум 5 хеш-тегів");
-    return;
-  } else if (arrHashtags.length !== setHashtegs.size) {
-    hashTag.setCustomValidity("Хеш-теги не мають повторюватися!");
-    return;
   } else {
-    arrHashtags.forEach((element) => {
-      if (element.charAt(0) !== "#") {
-        return hashTag.setCustomValidity("Хеш-тег має починатися з '#'!");
-      } else if (testInput(element)) {
-        return hashTag.setCustomValidity("# і тільки букви та цифри!");
-      } else if (element.length < 2 || element.length > 20) {
-        return hashTag.setCustomValidity(
-          "Хеш-тег має містити від 2 до 20 символів!"
-        );
+    for (let ht of arrHashtags) {
+      if (ht[0] !== "#") {
+        hashTag.setCustomValidity("Хеш-тег має починатися з '#'!");
+        break;
+      } else if (ht.match(regex).join("") !== ht) {
+        hashTag.setCustomValidity("# і тільки букви та цифри!");
+        break;
+      } else if (ht.length < 2 || ht.length > 20) {
+        hashTag.setCustomValidity("Хеш-тег має містити від 2 до 20 символів!");
+        break;
+      } else if (setHashtags.has(ht.toLowerCase())) {
+        hashTag.setCustomValidity("Хеш-теги не мають повторюватися!");
+        break;
       } else {
         hashTag.setCustomValidity("");
       }
-    });
+      setHashtags.add(ht.toLowerCase());
+      hashTag.reportValidity();
+      
+    }
   }
 }
 
-function testInput(el) {
-  return !/^#[/a-zа-я0-9]+$/i.test(el);
-}
+
 
 //Форма
 form.addEventListener("submit", function (event) {
   if (hashTag.checkValidity()) {
     alert("Форма відправленна");
-  } else if (!hashTag.checkValidity()) {
-    alert("false");
-  }
+  } 
+  
   event.preventDefault();
 });
 
-form.addEventListener("focus", function (e) {
-  if (!e.target.checkValidity()) {
-    hashTag.setCustomValidity(""); // Як прибрать повідомлення при фокусі
-  }
-});
-
-// // //Button submit
-// btnSubmit.onsubmit, function (event) {
-//   alert('Форма відправлена!')
-//   event.preventDefault();
-//   // if (!uploadForm.checkValidity()) {
-//   //   //hashTag.setCustomValidity("bla-bla")
-//   //
-// };
-
-//!/^#(?![\d+_@.-]+$)[a-zа-я0-9]{1,19}$/i
-
-// hashTag.addEventListener("change", checkInput);//-Де Їх оголошувати?
-// hashTag.removeAttribute("required");
-// hashTag.setAttribute("pattern",'/^#[a-zа-я0-9]{1,19}$/i');
-// function checkInput(e) {
-//   const arrHashtags = e.target.value.trim().split(" ");
-//   arrHashtags.forEach((element) => {
-//     if (arrHashtags.length > 5) {
-//       hashTag.setCustomValidity("Максимум 5 хеш-тегів");
-//       console.log("Максимум 5 хеш-теги");
-//     } else if (testInput(element)) {
-//       hashTag.setCustomValidity("Не валідний хеш-тег");
-//       console.log("Не валідний хеш-тег");
-//     } else {
-//       hashTag.setCustomValidity("");
-//     }
-//   });
-// }
-
-// if (arrHashtags.length > 5) {
-//   hashTag.setCustomValidity("Максимум 5 хеш-тегів");
-// } else {
-//   arrHashtags.forEach((element) => {
-//     if (element.charAt(0) !== "#") {
-//       hashTag.setCustomValidity("Хеш-тег має починатися з '#'");
-//     } else if (testInput(element)) {
-//       hashTag.setCustomValidity("# і тільки букви та цифри");
-//     } else if (element.length < 2 || element.length > 20) {
-//       hashTag.setCustomValidity("Хеш-тег має містити від 2 до 20 символів");
-//     } else {
-//       hashTag.setCustomValidity("");
-
-//     }
-//   });
-// }
