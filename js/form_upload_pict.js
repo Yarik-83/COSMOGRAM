@@ -49,19 +49,17 @@ function validateComment(e) {
 // Хеш_тег
 hashTag.addEventListener("change", validateHashTags);
 function validateHashTags() {
-  hashTag.removeAttribute('required');
-
-
+  hashTag.removeAttribute("required");
   const arrayValue = hashTag.value.split(" ");
   const arrHashtags = [];
-  for ( let el of arrayValue){
-    if(el.trim() !== '') {
+  const setHashtags = new Set();
+  const regex = /^#[a-z]*[а-я]*[0-9]*/gi;
+
+  for (let el of arrayValue) {
+    if (el.trim() !== "") {
       arrHashtags.push(el);
     }
   }
-
-  const setHashtags = new Set();
-  const regex = /^#[a-z]*[а-я]*[0-9]*/gi;
 
   if (arrHashtags.length > 5) {
     hashTag.setCustomValidity("Максимум 5 хеш-тегів");
@@ -83,20 +81,16 @@ function validateHashTags() {
         hashTag.setCustomValidity("");
       }
       setHashtags.add(ht.toLowerCase());
-      hashTag.reportValidity();
-      
     }
+    hashTag.reportValidity();
   }
 }
-
-
 
 //Форма
 form.addEventListener("submit", function (event) {
   if (hashTag.checkValidity()) {
     alert("Форма відправленна");
-  } 
-  
+  }
+
   event.preventDefault();
 });
-
