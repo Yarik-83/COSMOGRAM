@@ -1,6 +1,5 @@
 const inputFileUpload = document.querySelector("#upload-file");
 const form = document.getElementById("upload-select-image");
-const btnSubmit = document.querySelector("#upload-submit"); //-Де Їх оголошувати?
 export const descript = form.querySelector(".text__description");
 export const hashTag = form.querySelector(".text__hashtags");
 
@@ -37,7 +36,6 @@ export function escapeFormClosed(event) {
 descript.addEventListener("input", validateComment);
 function validateComment(e) {
   descript.setAttribute("maxlength", "140");
-  console.log(descript.value);
   if (descript.value.length > 140) {
     descript.setCustomValidity("Трошки коротче)))");
     descript.reportValidity();
@@ -48,8 +46,8 @@ function validateComment(e) {
 
 // Хеш_тег
 hashTag.addEventListener("change", validateHashTags);
+hashTag.removeAttribute('required');
 function validateHashTags() {
-  hashTag.removeAttribute("required");
   const arrayValue = hashTag.value.split(" ");
   const arrHashtags = [];
   const setHashtags = new Set();

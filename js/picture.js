@@ -2,6 +2,7 @@
 
 
 
+
 export function generatePhotos(arr){
     const el = arr.map((el) => {
       return generatePhoto(el);
