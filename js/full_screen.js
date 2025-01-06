@@ -1,6 +1,5 @@
 import { array } from "./data.js";
-import { descript } from "./form_upload_pict.js";
-import { hashTag } from "./form_upload_pict.js";
+
 
 // Відкриття вікна повноекранного перегляду
 const bigPicture = document.querySelector(".big-picture");
@@ -27,15 +26,16 @@ export function handleClick(event) {
     const arrCommentsCopy = arrComments.slice();
     const template = document.querySelector(".social__template");
     const fragment = new DocumentFragment();
+    const stepComment = 5;
 
-    if (arrComments.length > 5) {
+    if (arrComments.length > stepComment) {
       document
         .querySelector(".social__comment-count")
         .classList.remove("hidden");
       document.querySelector(".comments-loader").classList.remove("hidden");
     }
 
-    const arrCommentsSlice = arrCommentsCopy.splice(0, 5);
+    const arrCommentsSlice = arrCommentsCopy.splice(0, stepComment);
     for (let comment of arrCommentsSlice) {
       const content = template.cloneNode(true).content;
       fragment.append(content);
@@ -47,10 +47,10 @@ export function handleClick(event) {
     }
 
     const btnLoadComments = document.querySelector(".comments-loader");
-    btnLoadComments.addEventListener("click",() => {       // чи норм зі срілкою ?
-      const arrCommentsSlice2 = arrCommentsCopy.splice(0, 5);
+    btnLoadComments.addEventListener("click",() => {      
+      const arrComSlice = arrCommentsCopy.splice(0, stepComment);
 
-      for (let comment of arrCommentsSlice2) {
+      for (let comment of arrComSlice) {
        const content = template.cloneNode(true).content;
         fragment.append(content);
         fragment.querySelector(".social__picture").src = comment.avatar;
@@ -66,7 +66,7 @@ export function handleClick(event) {
       }
     });
   }
-}                             //коли і де обєднувати гілки?
+}                             
 
 
 
@@ -84,6 +84,8 @@ export function pictureClosed() {
 
 //  Функція зля закриття вікна (Escape)
 export function pressEscape(cb) {
+  const descript = document.querySelector(".text__description");
+  const hashTag = document.querySelector(".text__hashtags");
   return document.addEventListener("keydown", function (event) {
     if (
       event.code === "Escape" &&

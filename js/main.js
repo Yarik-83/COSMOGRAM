@@ -6,6 +6,8 @@ import { array } from "./data.js";
 import { uploadClosed } from "./form_upload_pict.js";
 import { uploadFile } from "./form_upload_pict.js";
 import { escapeFormClosed } from "./form_upload_pict.js";
+import { imgAddZoom } from "./form_upload_pict.js";
+import { imgAddEffect } from "./form_upload_pict.js";
 import { btnCancel } from "./utility.js";
 
 
@@ -17,7 +19,7 @@ const userPictures = document.querySelector(".pictures");
 userPictures.addEventListener("click", handleClick);
 
 // Закриття вікна повноекранного перегляду (button)
-btnCancel(pictureClosed)
+btnCancel(pictureClosed);
 
 // Закриття вікна повноекранного перегляду (escape)
 pressEscape(pictureClosed);
@@ -27,10 +29,19 @@ const upload = document.getElementById("upload-file");
 document.addEventListener("change", uploadFile);
 
 //Закриття вікна загрузки (button)
-btnCancel(uploadClosed)
+btnCancel(uploadClosed);
 
 // Закриття вікна загрузки (escape)
 escapeFormClosed(uploadClosed);
+
+//Зум зображення
+imgAddZoom();
+
+//Ефект зображення
+imgAddEffect();
+
+
+
 
 
 
